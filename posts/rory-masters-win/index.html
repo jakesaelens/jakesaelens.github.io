@@ -22,6 +22,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -166,6 +200,90 @@ ul.task-list li input[type="checkbox"] {
 <p>Rory, throughout his career, has been able to win events and win them often. But, for 16 years in a row, he was unable to get the job done at the Masters. In his first 16 trips to Augusta, he had nine top 20 finishes, seven of those being in the top ten, four of those being in the top 5, and one runner-up finish in 2022. McIlroy has only missed the cut at the event three times, with two of those coming this decade in 2021 and 2023. It felt like if Rory was going to get it done, it had to be sooner rather than later before his championship window closed.</p>
 <p>After shooting a 73 on Sunday with many ups and downs throughout the day, McIlroy found himself all knotted up with England’s Justin Rose at 11-under par, the two would head to a playoff, where McIlroy’s beautiful approach to just a couple feet helped him get a birdie, which won him the championship following Rose’s par.</p>
 <p>Like previously mentioned, McIlroy and Rose were tied after 72 holes. However, their paths to 11-under par were vastly different. Rose had many birdies and many bogeys, and was free of suffering anything worse. On the other hand, McIlroy suffered four double bogeys, but made up for them, at least a little bit, with three eagles throughout the tournament.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(waffle)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>rorywin <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"2025masters.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 212 Columns: 35
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr   (5): tour, event_name, player_name, fin_text, course_name
+dbl  (28): year, season, event_id, dg_id, round_num, course_num, course_par,...
+date  (1): event_completed
+time  (1): teetime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>wafflechart <span class="ot">&lt;-</span> rorywin <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span> (player_name) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">birdie =</span> <span class="fu">sum</span>(birdies),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">eagle =</span> <span class="fu">sum</span>(eagles_or_better),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">bogey =</span> <span class="fu">sum</span>(bogies),</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">double =</span> <span class="fu">sum</span> (doubles_or_worse),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">par =</span> <span class="fu">sum</span>(pars))</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>rory <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Double Bogey"</span><span class="ot">=</span><span class="dv">4</span>, <span class="st">"Bogey"</span><span class="ot">=</span><span class="dv">5</span>, <span class="st">"Par"</span><span class="ot">=</span><span class="dv">42</span>, <span class="st">"Birdie"</span><span class="ot">=</span><span class="dv">18</span>, <span class="st">"Eagle"</span><span class="ot">=</span><span class="dv">3</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>rose <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bogey"</span><span class="ot">=</span><span class="dv">13</span>, <span class="st">"Par"</span><span class="ot">=</span><span class="dv">35</span>, <span class="st">"Birdie"</span><span class="ot">=</span><span class="dv">24</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="fu">iron</span>(</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">waffle</span>(rory,</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">rows =</span> <span class="dv">4</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>         <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"#8B0000"</span>, <span class="st">"#FF474C"</span>, <span class="st">"black"</span>, <span class="st">"#A1FA88"</span>, <span class="st">"#426F36"</span>)) <span class="sc">+</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span> <span class="st">"Rory McIlroy"</span>,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="st">"Rory McIlroy vs Justin Rose: Scoring at the 2025 Masters"</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">subtitle =</span> <span class="st">"Through 72 holes, the two men had the same score, however, their paths to get there were extremely different."</span>) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>, <span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">10</span>),</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">waffle</span>(rose,</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>         <span class="at">rows =</span> <span class="dv">4</span>,</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>         <span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"#FF474C"</span>, <span class="st">"black"</span>, <span class="st">"#A1FA88"</span>)) <span class="sc">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"Justin Rose</span><span class="sc">\n</span><span class="st">1 square = 1 hole"</span>,</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">caption =</span> <span class="st">"Source: Data Golf | By Jacob Saelens"</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
 
